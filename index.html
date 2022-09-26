@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="stylesheet.css" />
+  <title>Autenticación Multi-Factor</title>
+
+</head>
+
+<body>
+	<div class="video">
+	<video controls autoplay width="640" height="480">
+		<source src="Multi-Factor Authentication\Módulo 5_Multi-Factor Authentication.mp4" type="video/mp4" />
+	</video>
+</div>
+    <div class="preguntasportema"> 
+<fieldset>
+	<legend>Cuestionario Autenticación Multi-Factor</legend>
+	<div id="test">
+		<div class="cuestion">1. La opci&oacute;n con un m&eacute;todo incorrecto de autenticaci&oacute;n multi-factor corresponde a:</div>
+		<div class="respuestas">
+			<label>
+				<input type="radio" name="0" value="a">&nbsp;a : Algo que se sabe (Contrase&nacute;a). &nbsp;</label>
+			<label>
+				<input type="radio" name="0" value="b">&nbsp;b : Algo que se recibe (SMS). &nbsp;</label>
+			<label>
+				<input type="radio" name="0" value="c">&nbsp;c : Algo que se es (Huella dactilar). &nbsp;</label>
+		</div>
+		<div class="cuestion">2.La diferencia entre Verificaci&oacute;n en Dos Pasos y Autenticaci&oacute;n Multi-Factor corresponde a:</div>
+		<div class="respuestas">
+			<label>
+				<input type="radio" name="1" value="a">&nbsp;a : La verificaci&oacute;n en dos pasos env&iacute;a un c&oacute;digo f&aacute;cilmente interceptable por SMS, en cambio, el doble factor utiliza otros medios f&iacute;sicos como la biometr&iacute;a, con lo que, es m&aacute;s seguro.&nbsp;</label>
+			<label>
+				<input type="radio" name="1" value="b">&nbsp;b : La verificaci&oacute;n en dos pasos se puede utilizar solo en dispositivos m&oacute;viles, en cambio, el doble factor puede implementarse en cualquier dispositivo.&nbsp;</label>
+			<label>
+				<input type="radio" name="1" value="c">&nbsp;c : El doble factor cuenta con m&aacute;s pasos de verificaci&oacute;n que la verificaci&oacute;n en dos pasos.&nbsp;</label>
+		</div>
+		<div class="cuestion">3. Una manera de utilizar la autenticaci&oacute;n de doble factor corresponde a:</div>
+		<div class="respuestas">
+			<label>
+				<input type="radio" name="2" value="a">&nbsp;a : C&oacute;digo a trav&eacute;s de Whatsapp.&nbsp;</label>
+			<label>
+				<input type="radio" name="2" value="b">&nbsp;b : Lista de accesos.&nbsp;</label>
+			<label>
+				<input type="radio" name="2" value="c">&nbsp;c : Medidas biom&eacute;tricas.&nbsp;</label>
+		</div>
+	</div>
+	<button id="boton">Mostrar resultado</button>
+	<div id="resultado">
+		<br>
+	</div>
+	<script>
+		const contenedor = document.getElementById("test");
+		const botonRes = document.getElementById("boton");
+		const resultadoTest = document.getElementById("resultado");
+
+		const preguntas = [
+			{
+				pregunta: "La opción con un método incorrecto de autenticación multi-factor corresponde a:",
+				respuestas:
+				{
+					a: "Algo que se sabe (Contraseña).",
+					b: "Algo que se recibe (SMS). ",
+					c: "Algo que se es (Huella dactilar). ",
+				},
+				respuestaCorrecta: "b",
+			},
+			{
+				pregunta: "2. La diferencia entre Verificación en Dos Pasos y Autenticación Multi-Factor corresponde a:",
+				respuestas:
+				{
+					a: "La verificación en dos pasos envía un código fácilmente interceptable por SMS, en cambio, el doble factor utiliza otros medios físicos como la biometría, con lo que, es más seguro.",
+					b: "La verificación en dos pasos se puede utilizar solo en dispositivos móviles, en cambio, el doble factor puede implementarse en cualquier dispositivo.",
+					c: "El doble factor cuenta con más pasos de verificación que la verificación en dos pasos.",
+				},
+				respuestaCorrecta: "a",
+			},
+			{
+				pregunta: "3. UUna manera de utilizar la autenticación de doble factor corresponde a:",
+				respuestas:
+				{
+					a: "Código a través de Whatsapp.",
+					b: "Lista de accesos.",
+					c: "Medidas biométricas.",
+				},
+				respuestaCorrecta: "c",
+			},
+
+		];
+
+		function mostrarTest()
+		{
+			const preguntasYrespuestas = [];
+
+			preguntas.forEach((preguntaActual, numeroDePregunta) =>
+			{
+
+				const respuestas = [];
+
+				for (letraRespuesta in preguntaActual.respuestas)
+				{
+
+					respuestas.push(
+
+						`
+        <label>
+                  <input type="radio" name="${numeroDePregunta}" value="${letraRespuesta}" />
+                  ${letraRespuesta} : ${preguntaActual.respuestas[letraRespuesta]} <br>
+              </label>` 
+					);
+                   
+				}
+
+				preguntasYrespuestas.push(
+					`
+      <div class="cuestion">${preguntaActual.pregunta}</div>
+      
+          <div class="respuestas"> ${respuestas.join("")} </div>
+          `
+				);
+			});
+
+			contenedor.innerHTML = preguntasYrespuestas.join("");
+		}
+
+		mostrarTest();
+
+		function mostrarResultado()
+		{
+			const respuestas = contenedor.querySelectorAll(".respuestas");
+			let respuestasCorrectas = 0;
+
+			preguntas.forEach((preguntaActual, numeroDePregunta) =>
+			{
+				const todasLasRespuestas = respuestas[numeroDePregunta];
+				const checkboxRespuestas = `input[name='${numeroDePregunta}']:checked`;
+				const respuestaElegida = (
+					todasLasRespuestas.querySelector(checkboxRespuestas) ||
+					{}
+				).value;
+
+				if (respuestaElegida === preguntaActual.respuestaCorrecta)
+				{
+					respuestasCorrectas++;
+
+					respuestas[numeroDePregunta].style.color = "blue";
+				}
+				else
+				{
+					respuestas[numeroDePregunta].style.color = "red";
+				}
+			});
+
+			resultadoTest.innerHTML =
+				"Usted ha acertado " +
+				respuestasCorrectas +
+				" preguntas de un total de " +
+				preguntas.length;
+		}
+
+		botonRes.addEventListener("click", mostrarResultado);
+
+	</script>
+       </div>
+
+</fieldset>
+</body>
+</html>
